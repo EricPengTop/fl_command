@@ -30,14 +30,14 @@ class _AppState extends State<_App> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Button(
-              '连接设备',
+              'connect device',
               onPressed: () async {
                 await adbProcess.connectDevice('192.168.40.46:7802');
               },
             ),
             const SizedBox(height: 20),
             Button(
-              '远程设备',
+              'remote device',
               onPressed: () async {
                 List<DeviceInfoModel> devices = await adbProcess.getDevices(
                   deviceInfo: true,
@@ -51,7 +51,7 @@ class _AppState extends State<_App> {
             ),
             const SizedBox(height: 20),
             Button(
-              '断开设备',
+              'disconnect',
               onPressed: () async {
                 adbProcess.disconnect();
               },
