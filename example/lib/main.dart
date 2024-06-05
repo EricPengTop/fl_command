@@ -1,16 +1,14 @@
-import 'package:example/page/adb_page.dart';
-import 'package:example/page/scrcpy_page.dart';
-import 'package:example/platform.dart';
+import 'package:fl_command/fl_command.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(
-      navigatorKey: GlobalWayUI().navigatorKey,
-      scaffoldMessengerKey: GlobalWayUI().scaffoldMessengerKey,
+  runApp(
+    const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const _App()));
+      home: _App(),
+    ),
+  );
 }
 
 class _App extends StatefulWidget {
@@ -21,33 +19,48 @@ class _App extends StatefulWidget {
 }
 
 class _AppState extends State<_App> {
+  late AdbProcess adbProcess = AdbProcess();
+  late ScrcpyProcess scrcpyProcess = ScrcpyProcess();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Universal(
-            padding: const EdgeInsets.all(10),
-            width: double.infinity,
-            children: [
-          Button('adb script', onPressed: () {
-            _push(const FlADB());
-          }),
-          Button('scrcpy script', onPressed: () {
-            _push(const FlScrcpy());
-          }),
-        ]));
-  }
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Button(
+              '连接设备',
+              onPressed: () async {
+                await adbProcess.connectDevice('192.168.40.46:7802');
+              },
+            ),
+            const SizedBox(height: 20),
+            Button(
+              '远程设备',
+              onPressed: () async {
+                List<DeviceInfoModel> devices = await adbProcess.getDevices(
+                  deviceInfo: true,
+                );
+                debugPrint(devices.join());
 
-  Future<void> _push(Widget widget) async {
-    await push(Scaffold(
-        appBar: AppBar(title: const Text("")),
-        body: Universal(isStack: true, children: [
-          (supportedPlatforms
-              ? widget
-              : const Center(child: Text('The platform is not supported'))),
-        ])));
+                if (devices.isNotEmpty) {
+                  scrcpyProcess.runScrcpy(['-s', devices.first.id]);
+                }
+              },
+            ),
+            const SizedBox(height: 20),
+            Button(
+              '断开设备',
+              onPressed: () async {
+                adbProcess.disconnect();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
-
-  bool get supportedPlatforms => !isWeb && isDesktop;
 }
 
 class Button extends StatelessWidget {
@@ -58,8 +71,9 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ElevatedButton(onPressed: onPressed, child: Text(text)));
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(text),
+    );
   }
 }

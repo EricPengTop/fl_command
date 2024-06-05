@@ -85,6 +85,24 @@ class AdbProcess extends ProcessShell {
     return runArgs(adbPath!, arguments, onProcess: onProcess);
   }
 
+  /// 连接设备
+  Future<bool> connectDevice(String device) async {
+    final result = await runAdb(['connect', device]);
+    return result?.exitCode == 0;
+  }
+
+  /// 断开连接
+  Future<bool> disconnectDevice(String device) async {
+    final result = await runAdb(['disconnect', device]);
+    return result?.exitCode == 0;
+  }
+
+  /// 断开连接
+  Future<bool> disconnect() async {
+    final result = await runAdb(['disconnect']);
+    return result?.exitCode == 0;
+  }
+
   /// 获取设备列表
   /// deviceInfo = false 默认不获取其他信息
   Future<List<DeviceInfoModel>> getDevices({bool deviceInfo = false}) async {
@@ -448,7 +466,6 @@ class AdbProcess extends ProcessShell {
   }
 
   /// 截图保存到电脑
-  /// savePath = "${path}/file_name.png";
   Future<bool> screenCap(String device, String savePath) async {
     const fileName = 'screen_cap.png';
     final result = await runAdb([

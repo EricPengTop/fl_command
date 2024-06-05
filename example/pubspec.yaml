@@ -9,7 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_waya: any
   fl_command:
     path: ../
 

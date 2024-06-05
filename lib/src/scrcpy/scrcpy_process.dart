@@ -42,19 +42,19 @@ class ScrcpyProcess extends ProcessShell {
 
   /// scrcpy 下载地址
   String? downloadUrl() {
-    return null;
+    return 'https://github.com/Genymobile/scrcpy/releases/download/v2.4/scrcpy-win64-v2.4.zip';
   }
 
   /// 获取Scrcpy路径
   Future<String?> checkScrcpy() async {
     var executable = Platform.isWindows ? "where" : "which";
-    var result = await runArgs(executable, ['adb']);
+    var result = await runArgs(executable, ['scrcpy']);
     _scrcpyPath = result?.stdout.toString().trim();
     return _scrcpyPath ??= await download();
   }
 
   ///  run Scrcpy
-  Future<ProcessResult?> runScrcpy(String executable, List<String> arguments,
+  Future<ProcessResult?> runScrcpy(List<String> arguments,
       {ProcessShellProcess? onProcess}) async {
     await checkScrcpy();
     if (_scrcpyPath == null) return null;

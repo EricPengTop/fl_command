@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class DeviceInfoModel {
   DeviceInfoModel({required this.id, required this.info})
       : model = info["ro.product.model"],
@@ -21,6 +23,18 @@ class DeviceInfoModel {
   final String id;
 
   final Map<String, String> info;
+
+  Map<String, dynamic> toJson() => {
+    "sdk": sdk,
+    "release": release,
+    "brand": brand,
+    "id": id,
+  };
+
+  @override
+  String toString() {
+    return json.encode(toJson());
+  }
 }
 
 class DeviceProcessModel {
