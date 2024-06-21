@@ -88,7 +88,7 @@ class AdbProcess extends ProcessShell {
   /// 连接设备
   Future<bool> connectDevice(String device) async {
     final result = await runAdb(['connect', device]);
-    return result?.exitCode == 0;
+    return result != null && result.exitCode == 0 && !result.outText.contains('failed');
   }
 
   /// 断开连接
