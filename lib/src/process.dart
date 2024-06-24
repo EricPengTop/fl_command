@@ -25,7 +25,7 @@ class ProcessShell {
       bool commentVerbose = false,
       bool workingDirectorySetting = true}) {
     _shell = Shell(
-        workingDirectory: workingDirectorySetting ? workingDirectory ?? getHome : null,
+        workingDirectory: workingDirectorySetting ? (workingDirectory ?? getHome) : null,
         throwOnError: throwOnError,
         includeParentEnvironment: includeParentEnvironment,
         runInShell: runInShell,
