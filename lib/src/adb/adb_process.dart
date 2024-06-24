@@ -22,7 +22,7 @@ class AdbProcess extends ProcessShell {
       super.stderr,
       super.verbose = true,
       super.commandVerbose = true,
-      super.commentVerbose = false});
+      super.commentVerbose = false, super.workingDirectorySetting = true});
 
   /// adb path
   String? _adbPath;
