@@ -19,7 +19,7 @@ class ScrcpyProcess extends ProcessShell {
       super.stderr,
       super.verbose = true,
       super.commandVerbose = true,
-      super.commentVerbose = false});
+      super.commentVerbose = false, super.workingDirectorySetting = true});
 
   /// scrcpy path
   String? _scrcpyPath;
