@@ -22,9 +22,10 @@ class ProcessShell {
       StreamSink<List<int>>? stderr,
       bool verbose = true,
       bool commandVerbose = true,
-      bool commentVerbose = false}) {
+      bool commentVerbose = false,
+      bool workingDirectorySetting = true}) {
     _shell = Shell(
-        workingDirectory: workingDirectory ?? getHome,
+        workingDirectory: workingDirectorySetting ? workingDirectory ?? getHome : null,
         throwOnError: throwOnError,
         includeParentEnvironment: includeParentEnvironment,
         runInShell: runInShell,
